@@ -1,0 +1,40 @@
+version: '3'
+services:
+  influxdb:
+    image: influxdb:2.0
+    ports:
+      - '8086:8086'
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    networks:
+      - telegraf-influx-network
+    environment:
+    - DOCKER_INFLUXDB_INIT_MODE=setup
+    - DOCKER_INFLUXDB_INIT_USERNAME=nathan
+    - DOCKER_INFLUXDB_INIT_PASSWORD=nathan123
+    - DOCKER_INFLUXDB_INIT_ORG=tiketdotcom
+    - DOCKER_INFLUXDB_INIT_BUCKET=tiketdotcom-bucket
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana-server
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - telegraf-influx-network
+
+volumes:
+  influxdb-storage:
+    name: influxdb-volume
+  grafana-data:
+    name: grafana-data
+
+networks:
+  telegraf-influx-network:
+    driver: bridge

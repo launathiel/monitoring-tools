@@ -1,0 +1,20 @@
+version: '3'
+services: 
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: always
+    volumes:
+    - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    networks:
+      - telegraf-influx-network
+    environment:
+    - INFLUX_TOKEN=31xXMZcOp30vYl3YjQ6pIKLIvfoQ2ee5MOt3NrHRfySMnRDvYC9cT5hl5b48w1c0GHK2fJ_pdvh6yaofLtVjOA== #Put Your token here!
+    - INFLUX_ORG=tiketdotcom 
+    - INFLUX_BUCKET=tiketdotcom-bucket 
+    ports:
+    - '8125:8125'
+
+networks:
+  telegraf-influx-network:
+    driver: bridge
