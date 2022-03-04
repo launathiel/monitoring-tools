@@ -9,9 +9,9 @@ services:
     networks:
       - telegraf-influx-network
     environment:
-    - INFLUX_TOKEN=31xXMZcOp30vYl3YjQ6pIKLIvfoQ2ee5MOt3NrHRfySMnRDvYC9cT5hl5b48w1c0GHK2fJ_pdvh6yaofLtVjOA== #Put Your token here!
-    - INFLUX_ORG=tiketdotcom 
-    - INFLUX_BUCKET=tiketdotcom-bucket 
+    - INFLUX_TOKEN=mytoken #Put Your token here!
+    - INFLUX_ORG=nathanorg 
+    - INFLUX_BUCKET=nathanorg-bucket 
     ports:
     - '8125:8125'
 

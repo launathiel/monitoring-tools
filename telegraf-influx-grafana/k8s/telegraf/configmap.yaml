@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegraf-config
+data:
+  telegraf.conf: |+
+    [[outputs.influxdb]]
+      urls = ["$INFLUXDB_URL"]
+      database = "$INFLUXDB_DB"
+      username = "$INFLUXDB_USER"
+      password = "$INFLUXDB_USER_PASSWORD"
+
+    [[inputs.statsd]]
+      max_tcp_connections = 250
+      tcp_keep_alive = false
+      service_address = ":8125"
+      delete_gauges = true
+      delete_counters = true
+      delete_sets = true
+      delete_timings = true
+      metric_separator = "."
+      allowed_pending_messages = 10000
+      percentile_limit = 1000
+      parse_data_dog_tags = true 
+      read_buffer_size = 65535
+
+    # Read metrics about cpu usage
+    [[inputs.cpu]]
+      ## Whether to report per-cpu stats or not
+      percpu = true
+      ## Whether to report total system cpu stats or not
+      totalcpu = true
+      ## If true, collect raw CPU time metrics.
+      collect_cpu_time = false
+      ## If true, compute and report the sum of all non-idle CPU states.
+      report_active = false
+
+    # Read metrics about disk usage by mount point
+    [[inputs.disk]]
+      ## By default stats will be gathered for all mount points.
+      ## Set mount_points will restrict the stats to only the specified mount points.
+      # mount_points = ["/"]
+
+      ## Ignore mount points by filesystem type.
+      ignore_fs = ["tmpfs", "devtmpfs", "devfs", "overlay", "aufs", "squashfs"]
+
+    # Read metrics about disk IO by device
+    [[inputs.diskio]]
+      ## By default, telegraf will gather stats for all devices including
+      ## disk partitions.
+      ## Setting devices will restrict the stats to the specified devices.
+      # devices = ["sda", "sdb", "vd*"]
+      ## Uncomment the following line if you need disk serial numbers.
+      # skip_serial_number = false
+      #
+      ## On systems which support it, device metadata can be added in the form of
+      ## tags.
+      ## Currently only Linux is supported via udev properties. You can view
+      ## available properties for a device by running:
+      ## 'udevadm info -q property -n /dev/sda'
+      # device_tags = ["ID_FS_TYPE", "ID_FS_USAGE"]
+      #
+      ## Using the same metadata source as device_tags, you can also customize the
+      ## name of the device via templates.
+      ## The 'name_templates' parameter is a list of templates to try and apply to
+      ## the device. The template may contain variables in the form of '$PROPERTY' or
+      ## '${PROPERTY}'. The first template which does not contain any variables not
+      ## present for the device is used as the device name tag.
+      ## The typical use case is for LVM volumes, to get the VG/LV name instead of
+      ## the near-meaningless DM-0 name.
+      # name_templates = ["$ID_FS_LABEL","$DM_VG_NAME/$DM_LV_NAME"]
+
+    # Get kernel statistics from /proc/stat
+    [[inputs.kernel]]
+      # no configuration
+
+    # Read metrics about memory usage
+    [[inputs.mem]]
+      # no configuration
+
+    # Get the number of processes and group them by status
+    [[inputs.processes]]
+      # no configuration
+
+    # Read metrics about swap memory usage
+    [[inputs.swap]]
+      # no configuration
+
+    # Read metrics about system load & uptime
+    [[inputs.system]]
+      # no configuration
+
+    # Collect TCP connections state and UDP socket counts
+    [[inputs.netstat]]
+      # no configuration
+
+    # Gather metrics about network interfaces
+    [[inputs.net]]
+      ## By default, telegraf gathers stats from any up interface (excluding loopback)
+      ## Setting interfaces will tell it to gather these explicit interfaces,
+      ## regardless of status. When specifying an interface, glob-style
+      ## patterns are also supported.
+      ##
+      # interfaces = ["eth*", "enp0s[0-1]", "lo"]
+      ##
+      ## On linux systems telegraf also collects protocol stats.
+      ## Setting ignore_protocol_stats to true will skip reporting of protocol metrics.
+      ##
+      # ignore_protocol_stats = false
+      ##

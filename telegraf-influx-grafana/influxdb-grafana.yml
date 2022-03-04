@@ -12,8 +12,8 @@ services:
     - DOCKER_INFLUXDB_INIT_MODE=setup
     - DOCKER_INFLUXDB_INIT_USERNAME=nathan
     - DOCKER_INFLUXDB_INIT_PASSWORD=nathan123
-    - DOCKER_INFLUXDB_INIT_ORG=tiketdotcom
-    - DOCKER_INFLUXDB_INIT_BUCKET=tiketdotcom-bucket
+    - DOCKER_INFLUXDB_INIT_ORG=nathanorg
+    - DOCKER_INFLUXDB_INIT_BUCKET=nathanorg-bucket
 
   grafana:
     image: grafana/grafana
